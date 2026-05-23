@@ -4,6 +4,8 @@ import { useAuth } from './AuthContext';
 
 const SocketContext = createContext(null);
 
+const getSocketUrl = () => import.meta.env.VITE_SOCKET_URL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:5173');
+
 export const SocketProvider = ({ children }) => {
   const { user } = useAuth();
   const [socket, setSocket] = useState(null);
@@ -14,7 +16,7 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    const instance = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000', {
+    const instance = io(getSocketUrl(), {
       auth: { token: localStorage.getItem('token') },
       withCredentials: true,
     });

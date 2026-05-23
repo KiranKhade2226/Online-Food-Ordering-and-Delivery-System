@@ -115,14 +115,16 @@ npm run dev
 
 - `MONGO_URI` - MongoDB connection string.
 - `JWT_SECRET` - JWT signing secret.
-- `CLIENT_URL` - Frontend origin for CORS and cookies.
+- `CLIENT_URL` - Primary frontend origin for CORS and cookies.
+- `CLIENT_URLS` - Optional comma-separated list of additional allowed frontend origins.
+- `ALLOWED_ORIGINS` - Optional comma-separated list of extra CORS/socket origins.
 - `RAZORPAY_KEY_ID` - Razorpay public key ID.
 - `RAZORPAY_KEY_SECRET` - Razorpay secret key.
 
 ### Frontend
 
-- `VITE_API_BASE_URL` - Backend API base URL.
-- `VITE_SOCKET_URL` - Socket.io server URL.
+- `VITE_API_BASE_URL` - Backend API base URL. Defaults to `/api` for same-origin deployments.
+- `VITE_SOCKET_URL` - Socket.io server URL. Defaults to the current page origin.
 - `VITE_RAZORPAY_KEY_ID` - Razorpay public key ID for checkout.
 
 ## Seed Data
@@ -301,18 +303,20 @@ npm run dev
 1. Create a new Render Web Service from the `backend` folder.
 2. Set the build command to `npm install`.
 3. Set the start command to `npm start`.
-4. Add environment variables from `backend/.env.example`.
-5. Point `MONGO_URI` to a MongoDB Atlas cluster.
-6. Set `CLIENT_URL` to the deployed Vercel frontend URL.
+4. You can also import the repo with the included `render.yaml` blueprint.
+5. Add environment variables from `backend/.env.example`.
+6. Point `MONGO_URI` to a MongoDB Atlas cluster.
+7. Set `CLIENT_URL` to the deployed Vercel frontend URL.
 
 ### Frontend on Vercel
 
 1. Import the repository into Vercel.
 2. Set the root directory to `frontend`.
-3. Add `VITE_API_BASE_URL` and `VITE_SOCKET_URL` as environment variables.
-4. Build command: `npm run build`.
-5. Output directory: `dist`.
-6. Deploy and update the backend `CLIENT_URL` to match the Vercel URL.
+3. The included `frontend/vercel.json` handles SPA routing.
+4. Add `VITE_API_BASE_URL` and `VITE_SOCKET_URL` as environment variables. Use the backend URL for separate frontend/backend deployments, or leave them unset when serving the frontend and API from the same origin.
+5. Build command: `npm run build`.
+6. Output directory: `dist`.
+7. Deploy and update the backend `CLIENT_URL` to match the Vercel URL.
 
 ### Production Checklist
 

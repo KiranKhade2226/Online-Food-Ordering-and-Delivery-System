@@ -1,21 +1,14 @@
 const { Server } = require('socket.io');
 const jwt = require('jsonwebtoken');
+const { isAllowedOrigin } = require('./origins');
 
 let io;
-
-const allowedOrigins = new Set([
-  process.env.CLIENT_URL,
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'http://127.0.0.1:5173',
-  'http://127.0.0.1:5174',
-].filter(Boolean));
 
 const initializeSocket = (server, app) => {
   io = new Server(server, {
     cors: {
       origin(origin, callback) {
-        if (!origin || allowedOrigins.has(origin) || /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin)) {
+        if (isAllowedOrigin(origin)) {
           return callback(null, true);
         }
 
